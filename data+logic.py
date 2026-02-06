@@ -15,6 +15,4 @@ health_data = load_json("health.json")
 education_data = load_json("education.json")
 
 
-# test
-if __name__ == "__main__":
-    print(" All data loaded successfully")
+
