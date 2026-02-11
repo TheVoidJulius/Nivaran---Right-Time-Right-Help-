@@ -1,0 +1,562 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GramSetu · Right Help, Right Time</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ---------- RESET & VARIABLES ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-dark: #1b5e20;
+            --secondary: #1565c0;
+            --secondary-light: #5e92f3;
+            --text: #333;
+            --text-light: #666;
+            --bg: #f8f9fa;
+            --card-bg: #fff;
+            --shadow: 0 5px 15px rgba(0,0,0,0.05);
+            --shadow-hover: 0 10px 25px rgba(0,0,0,0.1);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        h1, h2, h3 {
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3.2rem; }
+        h2 { font-size: 2.5rem; }
+        h3 { font-size: 1.5rem; }
+        p { margin-bottom: 1rem; }
+        .highlight { color: var(--primary); }
+
+        /* ---------- BUTTONS ---------- */
+        .btn-primary, .btn-secondary, .btn-submit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 32px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-secondary:hover {
+            background: rgba(46,125,50,0.05);
+            transform: translateY(-3px);
+        }
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* ---------- NAVIGATION ---------- */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo h1 {
+            font-size: 1.6rem;
+            margin: 0;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        .logo-icon {
+            font-size: 2rem;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* ---------- HERO ---------- */
+        .hero {
+            background: linear-gradient(135deg, #f8f9fa, #e8f5e9);
+            padding: 100px 0 120px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-content {
+            max-width: 700px;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin: 24px 0 32px;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .hero-visual {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(46,125,50,0.08), rgba(21,101,192,0.08));
+            animation: float 8s ease-in-out infinite;
+        }
+        .shape-1 { width: 300px; height: 300px; top: 10%; right: 5%; }
+        .shape-2 { width: 200px; height: 200px; top: 50%; right: 15%; animation-delay: 2s; }
+        .shape-3 { width: 150px; height: 150px; bottom: 10%; right: 20%; animation-delay: 4s; }
+        @keyframes float {
+            0%,100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
+        .animate-fade-in-delay { animation: fadeIn 0.8s ease-out 0.3s forwards; opacity: 0; }
+        .animate-fade-in-delay-2 { animation: fadeIn 0.8s ease-out 0.6s forwards; opacity: 0; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* ---------- FEATURE SECTION ---------- */
+        .features, .impact-section, .problem-submission {
+            padding: 100px 0;
+        }
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+        .section-header p {
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+            gap: 30px;
+        }
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 32px 24px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+        .feature-icon {
+            font-size: 2.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        .feature-card h3 { margin-bottom: 12px; }
+        .feature-card p { color: var(--text-light); margin: 0; }
+
+        /* ---------- IMPACT SECTION ---------- */
+        .impact-section {
+            background: white;
+        }
+        .impact-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+            gap: 30px;
+        }
+        .impact-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 32px 24px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            border: 1px solid rgba(46,125,50,0.1);
+        }
+        .impact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        .impact-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        /* ---------- SUBMISSION FORM & RESULT ---------- */
+        .problem-submission {
+            background: var(--bg);
+        }
+        .submission-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-card, .result-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+        .form-card h3 { margin-bottom: 8px; }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
+        }
+        .loader {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 40px;
+            align-items: center;
+            justify-content: center;
+        }
+        .loader.active { display: flex; }
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .result-card { display: none; }
+        .result-card.active {
+            display: block;
+            animation: fadeInUp 0.5s;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-header { text-align: center; margin-bottom: 30px; }
+        .success-icon {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+        .case-id {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            background: rgba(46,125,50,0.08);
+            padding: 8px 20px;
+            border-radius: 40px;
+            display: inline-block;
+            margin-top: 12px;
+        }
+        .result-section {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #eee;
+        }
+        .result-section:last-child { border-bottom: none; }
+        .result-section h4 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+        .result-section h4 i { color: var(--primary); }
+        .result-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        /* ---------- FOOTER ---------- */
+        .footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+        .footer-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .footer-logo .logo-icon { font-size: 3rem; }
+        .footer-logo h3 { margin: 0; color: white; }
+        .footer-tagline p {
+            color: rgba(255,255,255,0.8);
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        .copyright {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+            margin-top: 32px;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 992px) {
+            h1 { font-size: 2.8rem; }
+            .hero-visual { display: none; }
+        }
+        @media (max-width: 768px) {
+            .nav-container { flex-direction: column; gap: 16px; }
+            .nav-links { gap: 24px; }
+            h1 { font-size: 2.4rem; }
+            .hero { padding: 80px 0; }
+            .form-card, .result-card { padding: 32px 24px; }
+        }
+        @media (max-width: 576px) {
+            .feature-grid, .impact-cards { grid-template-columns: 1fr; }
+            .nav-links { flex-direction: column; align-items: center; gap: 12px; }
+            .hero-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION (no hackathon badge) -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <span class="logo-icon">🌾</span>
+                <h1>GramSetu</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">How it works</a></li>
+                <li><a href="#submit">Report</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title animate-fade-in">Right Help. <span class="highlight">Right Time.</span> Right Place.</h1>
+                <p class="hero-subtitle animate-fade-in-delay">
+                    A need-first digital routing platform that connects rural citizens 
+                    to the correct government schemes, support systems, and services — 
+                    without confusion or complexity.
+                </p>
+                <div class="hero-actions animate-fade-in-delay-2">
+                    <a href="#submit" class="btn-primary">Report a Problem</a>
+                    <a href="#features" class="btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-shape shape-1"></div>
+                <div class="floating-shape shape-2"></div>
+                <div class="floating-shape shape-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION (what we help with) -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>We help with</h2>
+                <p>Targeted assistance across critical rural development areas</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-tractor"></i></div>
+                    <h3>Agriculture</h3>
+                    <p>Crop issues, equipment access, subsidy information, and expert farming guidance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-heartbeat"></i></div>
+                    <h3>Health</h3>
+                    <p>Medical emergencies, telemedicine, vaccination drives, and healthcare access.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-coins"></i></div>
+                    <h3>Finance</h3>
+                    <p>Government schemes, microloans, banking access, and financial literacy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Education</h3>
+                    <p>School resources, digital learning, scholarships, and vocational training.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IMPACT SECTION -->
+    <section class="impact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Expected impact</h2>
+                <p>Clear, fast, and fair — for every rural citizen</p>
+            </div>
+            <div class="impact-cards">
+                <div class="impact-card">
+                    <i class="fas fa-map-signs impact-icon"></i>
+                    <h3>Reduced confusion</h3>
+                    <p>Step‑by‑step guidance tailored to each problem.</p>
+                </div>
+                <div class="impact-card">
+                    <i class="fas fa-bolt impact-icon"></i>
+                    <h3>Faster access</h3>
+                    <p>Direct routing to the right scheme and contact.</p>
+                </div>
+                <div class="impact-card">
+                    <i class="fas fa-chart-line impact-icon"></i>
+                    <h3>Improved outcomes</h3>
+                    <p>Prevent crises in health, finance, and education.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SMART PROBLEM SUBMISSION + RESULT -->
+    <section id="submit" class="problem-submission">
+        <div class="container">
+            <div class="section-header">
+                <h2>Report a problem</h2>
+                <p>Fill the form below – we’ll route you to the right help instantly</p>
+            </div>
+            <div class="submission-container">
+                <!-- FORM CARD -->
+                <div class="form-card">
+                    <h3>Describe your issue</h3>
+                    <form id="problemForm">
+                        <div class="form-group">
+                            <label for="name">Full name</label>
+                            <input type="text" id="name" placeholder="e.g. Ram Singh" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="village">Village / Town</label>
+                            <input type="text" id="village" placeholder="e.g. Chitrakoot" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" required>
+                                <option value="" disabled selected>Select a category</option>
+                                <option value="agriculture">Agriculture</option>
+                                <option value="health">Health</option>
+                                <option value="finance">Finance</option>
+                                <option value="education">Education</option>
+                                <option value="infrastructure">Infrastructure</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Problem description</label>
+                            <textarea id="description" rows="4" placeholder="Describe your issue in detail..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit" id="submitBtn">
+                            <span class="btn-text">Submit problem</span>
+                            <div class="loader" id="loader">
+                                <div class="spinner"></div>
+                            </div>
+                        </button>
+                    </form>
+                </div>
+                <!-- RESULT CARD (hidden by default) -->
+                <div class="result-card" id="resultCard">
+                    <div class="result-header">
+                        <div clas
